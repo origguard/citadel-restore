@@ -8,7 +8,7 @@
       "filename": "restore/v1.0.0.html",
       "size": 19048,
       "sha256": "4ae488130370531791f0cf4f91af7262f126ed534cd00244f2da5a67ccf8e1ca",
-      "released_at": "2026-10-12T14:42:00Z",
+      "released_at": "2026-10-13T00:13:27Z",
       "status": "IMMUTABLE_FROZEN"
     },
     {
@@ -16,7 +16,7 @@
       "filename": "restore/v1.2.0.html",
       "size": 25157,
       "sha256": "aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca",
-      "released_at": "2026-10-12T18:15:00Z",
+      "released_at": "2026-10-13T01:10:10Z",
       "status": "IMMUTABLE_FROZEN"
     },
     {
@@ -24,7 +24,7 @@
       "filename": "restore/v1.3.0.html",
       "size": 26033,
       "sha256": "24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7",
-      "released_at": "2026-10-12T22:30:00Z",
+      "released_at": "2026-10-13T02:39:29Z",
       "status": "IMMUTABLE_FROZEN"
     },
     {
@@ -32,16 +32,20 @@
       "filename": "restore/v1.4.0.html",
       "size": 26095,
       "sha256": "273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4",
-      "released_at": "2026-10-13T04:00:00Z",
+      "released_at": "2026-10-13T19:56:21Z",
       "status": "IMMUTABLE_FROZEN"
     }
   ],
   "amendments": [
     {
-      "date": "2026-10-13T04:00:00Z",
+      "date": "2026-10-13T19:56:21Z",
       "target_version": "v1.3.0",
+      "commit_origin": "b9d3f40",
+      "commit_rectified": "c74f771",
+      "exposure_window": "2026-10-13T03:41:06Z à 2026-10-13T19:56:21Z (16h15 dans le dépôt public)",
       "resolution": "RECTIFICATION_ET_INCREMENTATION",
-      "description": "Erratum sur la version v1.3.0 : lors du commit b9d3f40 du 12 octobre 2026, un fichier de 26 095 octets (SHA-256: 08f2217cc5088a2e440a8c8ffa442f173680d102b63511bff69e683dde84a21e) a été temporairement servi sous le nom restore/v1.3.0.html en remplacement de la release originale de 26 033 octets (SHA-256: 24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7). Conformément à la politique d'immuabilité stricte, la version v1.3.0 a été rétablie à son état d'origine scellé (eb5b9a5), et le fichier rectifié de 26 095 octets a été canonisé sous la version v1.4.0 (SHA-256: 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4)."
+      "description": "Erratum sur la version v1.3.0 : lors du commit b9d3f40 du 12 octobre 2026 23:41 EDT (2026-10-13T03:41:06Z), un fichier de 26 095 octets (SHA-256: 08f2217cc5088a2e440a8c8ffa442f173680d102b63511bff69e683dde84a21e) a été temporairement servi sous le nom restore/v1.3.0.html en remplacement de la release originale de 26 033 octets (SHA-256: 24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7). Conformément à la politique d'immuabilité stricte, la version v1.3.0 a été rétablie à son état d'origine scellé (eb5b9a5), et le fichier rectifié de 26 095 octets a été canonisé sous la version v1.4.0 (SHA-256: 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4).",
+      "client_instructions": "Si votre fascicule indique v1.3.0 et que votre fichier fait 26 095 octets avec l'empreinte 08f2217c, vous détenez ce qui s'appelle désormais v1.4.0 ; c'est l'empreinte imprimée sur votre fascicule qui est erronée, pas votre fichier."
     }
   ]
 }
