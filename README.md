@@ -22,7 +22,7 @@ This creates three structural points of failure:
 
 ## The Design: A Self-Contained Recovery Capsule
 
-`restore.html` is a single, zero-dependency HTML file (25 KB standalone file, 25,133 bytes) with no external network calls, no build step, and no JavaScript framework.
+`restore.html` is a single, zero-dependency HTML file (25 KB standalone file, 25157 bytes) with no external network calls, no build step, and no JavaScript framework.
 
 It can be saved onto a physical USB drive, burned onto an optical disc, or printed alongside an archival custody booklet. Double-clicking it in any standard web browser opens a fully operational cryptographic recovery console.
 
@@ -80,13 +80,13 @@ OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e
 ### 5. Archival Hash & Integrity Pinning
 The canonical standalone release of `restore.html` v1.2.0 is cryptographically pinned across all distributions (GitHub, USB air-locks, physical custody booklets, and web archive):
 * **Release Version**: `1.2.0`
-* **File Size**: `25,133 bytes` (24.5 KB)
-* **SHA-256**: `582c8115e0dd37b888abf92fadbdd616145288bc309b7f94b70115539b587ba9`
+* **File Size**: `25157 bytes` (24.5 KB)
+* **SHA-256**: `aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca`
 
 Verify locally on any operating system:
 ```bash
 sha256sum restore.html
-# 582c8115e0dd37b888abf92fadbdd616145288bc309b7f94b70115539b587ba9  restore.html
+# aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca  restore.html
 ```
 
 ---
