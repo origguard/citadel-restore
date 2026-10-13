@@ -1,7 +1,7 @@
 {
   "policy": "STRICT_IMMUTABILITY",
   "description": "Ce registre scelle de maniere definitive les empreintes cryptographiques et tailles de chaque version publiee de restore.html. Aucune modification, coquille ou retouche n'est permise sur une version gelee dans ce registre. Tout correctif ulterieur doit imperativement incrementer la version semantique et etre publie a cote, afin que les fascicules physiques deja imprimes continuent de verifier leur empreinte exacte pour toujours.",
-  "canonical_latest": "v1.2.0",
+  "canonical_latest": "v1.3.0",
   "releases": [
     {
       "version": "v1.0.0",
@@ -12,11 +12,11 @@
       "status": "IMMUTABLE_FROZEN"
     },
     {
-      "version": "v1.2.0",
-      "filename": "restore/v1.2.0.html",
-      "size": 25157,
-      "sha256": "aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca",
-      "released_at": "2026-10-12T21:16:00Z",
+      "version": "v1.3.0",
+      "filename": "restore/v1.3.0.html",
+      "size": 26033,
+      "sha256": "24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7",
+      "released_at": "2026-10-12T22:30:00Z",
       "status": "IMMUTABLE_FROZEN"
     }
   ]

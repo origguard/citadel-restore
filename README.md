@@ -22,7 +22,7 @@ This creates three structural points of failure:
 
 ## The Design: A Self-Contained Recovery Capsule
 
-`restore.html` is a single, zero-dependency HTML file (25 KB standalone file, 25157 bytes) with no external network calls, no build step, and no JavaScript framework.
+`restore.html` is a single, zero-dependency HTML file (26 KB standalone file, 26033 bytes) with no external network calls, no build step, and no JavaScript framework.
 
 It can be saved onto a physical USB drive, burned onto an optical disc, or printed alongside an archival custody booklet. Double-clicking it in any standard web browser opens a fully operational cryptographic recovery console.
 
@@ -72,29 +72,28 @@ OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e
 * **Instant error detection**: The UI validates each token as you type.
 * **Exact character locator**: If a character is omitted, invalid, or corrupted, the tool highlights the exact 1-based character position.
 
-### 4. Zero Network Egress
+### 4. Zero Network Egress & Air-Gap Operation
 * `restore.html` does not load Google Fonts, CDNs, analytics, or external stylesheets.
-* It makes zero `fetch()`, `XMLHttpRequest`, `WebSocket`, or `sendBeacon` calls.
+* Zero third-party calls, trackers, or telemetries are emitted. When opened offline (`file://`), zero network calls are performed.
 * You can run it with Wi-Fi disabled, in an isolated VM, or on a permanently air-gapped machine running an offline live OS.
 
 ### 5. Archival Hash Pinning & Strict Immutability Policy
-The canonical standalone recovery engine `restore.html` v1.2.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
-* **Release Version**: `1.2.0`
-* **File Size**: `25157 bytes` (24.6 KB)
-* **SHA-256**: `aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca`
+The canonical standalone recovery engine `restore.html` v1.3.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
+* **Release Version**: `1.3.0`
+* **File Size**: `26033 bytes` (25.4 KB)
+* **SHA-256**: `24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7`
 
 #### The Immutability Guarantee
 Because this SHA-256 hash is printed on physical paper custody booklets deposited in vaults or with notaries, **published restore releases are strictly immutable**:
 * **Zero modification**: Once registered in `FROZEN_RELEASES.json`, a published release is never modified (no typo fixes, no translations, no retroactive edits).
-* **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version (e.g. `v1.3.0`) alongside previous releases.
-* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.2.0.html`) for life.
+* **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version alongside previous releases.
+* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.3.0.html`) for life.
 
 Verify all frozen archives locally on any operating system:
 ```bash
 sha256sum -c checksums.sha256
 # restore/v1.0.0.html: OK
-# restore/v1.1.0.html: OK
-# restore/v1.2.0.html: OK
+# restore/v1.3.0.html: OK
 # restore.html: OK
 ```
 

@@ -1,4 +1,4 @@
-# Citadel Vault & Shamir Recovery Specification (v1.2)
+# Citadel Vault & Shamir Recovery Specification (v1.3)
 
 ## 1. Overview & Threat Model
 
