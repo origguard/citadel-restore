@@ -164,7 +164,22 @@ console.log(`  - SHA-256 gelé     : ${latestFrozen.sha256}`);
 if (restoreHtmlBuf.length !== latestFrozen.size || restoreHtmlHash !== latestFrozen.sha256) {
   throw new Error('VIOLATION IMMUABILITÉ : restore.html a été altéré par rapport au registre gelé !');
 }
-console.log('  -> ✓ restore.html est strictement conforme au registre gelé d\'immuabilité.\n');
+console.log('  -> ✓ restore.html est strictement conforme au registre gelé d\'immuabilité.');
+
+console.log('\n  Audit des archives physiques présentes dans restore/ :');
+for (const rel of registry.releases) {
+  const archivePath = path.resolve(__dirname, '..', rel.filename);
+  if (!fs.existsSync(archivePath)) {
+    throw new Error(`Archive manquante dans le dépôt : ${rel.filename}`);
+  }
+  const buf = fs.readFileSync(archivePath);
+  const hash = sha256Hex(buf);
+  if (buf.length !== rel.size || hash !== rel.sha256) {
+    throw new Error(`VIOLATION IMMUABILITÉ : ${rel.filename} ne correspond pas à l'empreinte gelée !`);
+  }
+  console.log(`  - ${rel.version.padEnd(8)} | ${String(buf.length).padStart(5)} o | SHA-256 : ${hash} (✓ Conforme)`);
+}
+console.log('  -> ✓ Toutes les archives nommées dans FROZEN_RELEASES.json sont présentes et conformes.\n');
 
 console.log('======================================================================');
 console.log('SUCCÈS : TOUS LES TESTS MATHEMATIQUES, FORENSIQUES ET D\'IMMUABILITÉ ONT PASSÉ (100% OK)');

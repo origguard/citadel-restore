@@ -89,10 +89,13 @@ Because this SHA-256 hash is printed on physical paper custody booklets deposite
 * **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version (e.g. `v1.3.0`) alongside previous releases.
 * **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.2.0.html`) for life.
 
-Verify locally on any operating system:
+Verify all frozen archives locally on any operating system:
 ```bash
-sha256sum restore.html
-# aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca  restore.html
+sha256sum -c checksums.sha256
+# restore/v1.0.0.html: OK
+# restore/v1.1.0.html: OK
+# restore/v1.2.0.html: OK
+# restore.html: OK
 ```
 
 ---
