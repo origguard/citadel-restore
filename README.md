@@ -4,8 +4,8 @@
 *100% offline Shamir's Secret Sharing in $\text{GF}(2^8)$ and AES-256-GCM zero-trust vault recovery.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
-[![Zero Network Egress](https://img.shields.io/badge/Network_Egress-0_bytes-emerald.svg)](#offline-guarantees)
-[![File Size](https://img.shields.io/badge/Size-25_KB_(standalone)-blue.svg)](#architecture)
+[![Offline Operation](https://img.shields.io/badge/Network_Transmission-0_bytes-emerald.svg)](#offline-operation)
+[![File Size](https://img.shields.io/badge/Size-26_KB_(standalone)-blue.svg)](#architecture)
 
 ---
 
@@ -78,16 +78,16 @@ OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e
 * You can run it with Wi-Fi disabled, in an isolated VM, or on a permanently offline machine with network interfaces disabled.
 
 ### 5. Archival Hash Pinning & Strict Immutability Policy
-The canonical standalone recovery engine `restore.html` v1.3.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
-* **Release Version**: `1.3.0`
+The canonical standalone recovery engine `restore.html` v1.4.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
+* **Release Version**: `1.4.0`
 * **File Size**: `26095 bytes` (25.5 KB)
-* **SHA-256**: `08f2217cc5088a2e440a8c8ffa442f173680d102b63511bff69e683dde84a21e`
+* **SHA-256**: `273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4`
 
 #### The Immutability Guarantee
 Because this SHA-256 hash is printed on physical paper custody booklets deposited in vaults or with notaries, **published restore releases are strictly immutable**:
 * **Zero modification**: Once registered in `FROZEN_RELEASES.json`, a published release is never modified (no typo fixes, no translations, no retroactive edits).
 * **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version alongside previous releases.
-* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.3.0.html`) for life.
+* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.4.0.html`, `https://citadelhub.cloud/restore/v1.3.0.html`, `https://citadelhub.cloud/restore/v1.2.0.html`) for life.
 
 Verify all frozen archives locally on any operating system:
 ```bash
@@ -95,6 +95,7 @@ sha256sum -c checksums.sha256
 # restore/v1.0.0.html: OK
 # restore/v1.2.0.html: OK
 # restore/v1.3.0.html: OK
+# restore/v1.4.0.html: OK
 # restore.html: OK
 ```
 
