@@ -1,11 +1,11 @@
 # citadel-restore
 
-**A 19 KB standalone HTML file designed to outlive its creator.**  
+**A 25 KB standalone HTML file designed to outlive its creator.**  
 *100% offline Shamir's Secret Sharing in $\text{GF}(2^8)$ and AES-256-GCM zero-trust vault recovery.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
 [![Zero Network Egress](https://img.shields.io/badge/Network_Egress-0_bytes-emerald.svg)](#offline-guarantees)
-[![File Size](https://img.shields.io/badge/Size-19_KB_(standalone)-blue.svg)](#architecture)
+[![File Size](https://img.shields.io/badge/Size-25_KB_(standalone)-blue.svg)](#architecture)
 
 ---
 
@@ -22,7 +22,7 @@ This creates three structural points of failure:
 
 ## The Design: A Self-Contained Recovery Capsule
 
-`restore.html` is a single, zero-dependency HTML file (under 25 KB uncompressed, ~19 KB minified) with no external network calls, no build step, and no JavaScript framework.
+`restore.html` is a single, zero-dependency HTML file (25 KB standalone file, 25,133 bytes) with no external network calls, no build step, and no JavaScript framework.
 
 It can be saved onto a physical USB drive, burned onto an optical disc, or printed alongside an archival custody booklet. Double-clicking it in any standard web browser opens a fully operational cryptographic recovery console.
 
@@ -66,7 +66,7 @@ The payload is encrypted in pure RAM via the browser's native `window.crypto.sub
 ### 3. Real-Time Keystroke Checksum & Position Locator
 When keys are transcribed from paper, typos happen. Each share token includes an 8-character checksum derived from the first 32 bits of $\text{SHA-256}(\text{share\_bytes})$:
 ```
-OGCITADEL-1-2-3-3165742463b107e8b3ffce42612207b8a79937258659d4f24e41348639db9c41-b13a3979
+OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e-2961d81f
                                                                                     └── Checksum
 ```
 * **Instant error detection**: The UI validates each token as you type.
@@ -76,6 +76,18 @@ OGCITADEL-1-2-3-3165742463b107e8b3ffce42612207b8a79937258659d4f24e41348639db9c41
 * `restore.html` does not load Google Fonts, CDNs, analytics, or external stylesheets.
 * It makes zero `fetch()`, `XMLHttpRequest`, `WebSocket`, or `sendBeacon` calls.
 * You can run it with Wi-Fi disabled, in an isolated VM, or on a permanently air-gapped machine running an offline live OS.
+
+### 5. Archival Hash & Integrity Pinning
+The canonical standalone release of `restore.html` v1.2.0 is cryptographically pinned across all distributions (GitHub, USB air-locks, physical custody booklets, and web archive):
+* **Release Version**: `1.2.0`
+* **File Size**: `25,133 bytes` (24.5 KB)
+* **SHA-256**: `582c8115e0dd37b888abf92fadbdd616145288bc309b7f94b70115539b587ba9`
+
+Verify locally on any operating system:
+```bash
+sha256sum restore.html
+# 582c8115e0dd37b888abf92fadbdd616145288bc309b7f94b70115539b587ba9  restore.html
+```
 
 ---
 

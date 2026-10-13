@@ -1,4 +1,4 @@
-# Citadel Vault & Shamir Recovery Specification (v1.1)
+# Citadel Vault & Shamir Recovery Specification (v1.2)
 
 ## 1. Overview & Threat Model
 
@@ -20,16 +20,16 @@ A `.citadel-vault` file is an authenticated JSON container storing ciphertext, c
 ```json
 {
   "formatVersion": 1,
-  "documentName": "contract-sovereign.pdf",
-  "fileSize": 1048576,
+  "documentName": "confidential-recovery-manifest.txt",
+  "fileSize": 715,
   "threshold": 2,
   "totalShares": 3,
-  "sha256Original": "cbf2ba2d5398972935273eacae657bbc5d24c41237f99853d4398b823553d580",
-  "ivHex": "3a88c7f56b107e8b3ffce426",
-  "saltHex": "f019b8823553d5807bcde4a642631bcd",
+  "sha256Original": "c3c44dc6cf51ad22f53b1930edbdb397984eb16adbaad56cbe87754f12b1b8bf",
+  "ivHex": "e35718679fac522d6f4054b3",
+  "saltHex": "ab6c43e717337cdced0df9f0ed0dc7b7",
   "ciphertextBase64": "<base64_encoded_aes_256_gcm_ciphertext_with_16_byte_tag>",
-  "merkleRoot": "209d881e5a3d8d1e115bf64a0f1237b7faaf9b109266ef549d94d00557aab25e",
-  "createdAt": "2026-10-12T18:00:00.000Z"
+  "merkleRoot": "7d12773bb54c776c3dda74be2f868c168bf3dee77240c626dbfebeced30112b9",
+  "createdAt": "2026-10-13T00:10:21.871Z"
 }
 ```
 
@@ -60,7 +60,7 @@ OGCITADEL-<index>-<threshold>-<total>-<hex_data>-<checksum>
 
 ### Example
 ```
-OGCITADEL-1-2-3-3165742463b107e8b3ffce42612207b8a79937258659d4f24e41348639db9c41-b13a3979
+OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e-2961d81f
 ```
 
 ### Component Breakdown

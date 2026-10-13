@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="citadel-restore-version" content="1.1.0">
+  <meta name="citadel-restore-version" content="1.2.0">
   <title>CitadelHub™ · Restaurateur Autonome de Coffre Souverain (.citadel-vault)</title>
   <style>
     :root {
@@ -205,7 +205,7 @@
         <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--emerald);"></span>
         OUTIL UNIVERSEL DÉCONNECTÉ · AIR-GAP LOCAL
       </div>
-      <h1 class="title">Restauration d'Urgence de Coffre Souverain <span id="app-restore-version" style="font-size:16px;color:var(--teal);font-weight:600;">v1.1.0</span></h1>
+      <h1 class="title">Restauration d'Urgence de Coffre Souverain <span id="app-restore-version" style="font-size:16px;color:var(--teal);font-weight:600;">v1.2.0</span></h1>
       <p class="subtitle">
         Cet utilitaire est 100 % autonome, sans serveur et sans appel réseau. Il permet à vos héritiers ou associés de reconstituer vos documents originaux même si CitadelHub venait à disparaître.
       </p>
@@ -251,7 +251,7 @@
       <h2 class="card-title"><span>🔑</span> Étape 2 : Parts de Quorum des Gardiens</h2>
       <div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11.5px;line-height:1.5;color:#CBD5E1;">
         <strong style="color:var(--teal);">⌨️ Saisie Manuelle & Détection Immédiate d'Erreurs :</strong>
-        Pour garantir une sécurité absolue sans dépendance tierce (outil autoportant de 19 Ko sans caméra externe), saisissez ou collez directement les codes textuels imprimés sous le QR-Code de vos fascicules. Chaque part est validée individuellement par sa somme de contrôle (checksum) en temps réel.
+        Pour garantir une sécurité absolue sans dépendance tierce (outil autoportant de 25 Ko sans caméra externe), saisissez ou collez directement les codes textuels imprimés sous le QR-Code de vos fascicules. Chaque part est validée individuellement par sa somme de contrôle (checksum) en temps réel.
       </div>
       <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
         Collez ci-dessous au moins le nombre de parts requis (ex: 2 parts sur 3). Chaque part peut être séparée par un saut de ligne ou un espace :
@@ -280,12 +280,13 @@
     <footer class="footer">
       <div style="background:rgba(10,16,29,0.8);border:1px solid rgba(22,34,56,0.8);border-radius:8px;padding:12px;margin-bottom:12px;text-align:left;">
         <div style="color:var(--teal);font-weight:bold;margin-bottom:4px;">📜 Registre des Versions Autonomes Pérennes :</div>
-        <div style="color:#94A3B8;margin-bottom:4px;">&bull; <strong>v1.1.0 (Version Active)</strong> (12 Oct 2026) : Contrôle temps réel caractère par caractère et sommes de contrôle (checksums) &bull; <a href="/restore/v1.1.0.html" style="color:var(--teal);text-decoration:underline;">restore/v1.1.0.html</a></div>
-        <div style="color:#94A3B8;">&bull; <strong>v1.0.0 (Archive Initiale)</strong> (12 Oct 2026) : SHA-256 <code>4ae488130370531791f0cf4f91af7262f126ed534cd00244f2da5a67ccf8e1ca</code> &bull; <a href="/restore/v1.0.0.html" style="color:var(--teal);text-decoration:underline;">restore/v1.0.0.html</a></div>
+        <div style="color:#94A3B8;margin-bottom:4px;">&bull; <strong>v1.2.0 (Version Active)</strong> (13 Oct 2026) : Contrôle temps réel caractère par caractère et sommes de contrôle (checksums) &bull; <a href="/restore/v1.2.0.html" style="color:var(--teal);text-decoration:underline;">restore/v1.2.0.html</a></div>
+        <div style="color:#64748B;font-size:11px;">&bull; <strong>v1.1.0</strong> (12 Oct 2026) : Version intermédiaire &bull; <a href="/restore/v1.1.0.html" style="color:#64748B;text-decoration:underline;">restore/v1.1.0.html</a></div>
+        <div style="color:#64748B;font-size:11px;">&bull; <strong>v1.0.0 (Archive Initiale)</strong> (12 Oct 2026) : SHA-256 <code>4ae488130370531791f0cf4f91af7262f126ed534cd00244f2da5a67ccf8e1ca</code> &bull; <a href="/restore/v1.0.0.html" style="color:#64748B;text-decoration:underline;">restore/v1.0.0.html</a></div>
       </div>
       <p>CitadelHub™ Sovereign Restorer · Zero-Egress Air-Gap Engine</p>
       <p style="color:var(--muted);margin-top:4px;">
-        Ce fichier est 100 % autonome (19 Ko). Conservez-le avec votre coffre sur clé USB ou disque externe pour un déchiffrement garanti à vie.
+        Ce fichier est 100 % autonome (25 Ko). Conservez-le avec votre coffre sur clé USB ou disque externe pour un déchiffrement garanti à vie.
       </p>
     </footer>
   </div>
@@ -516,7 +517,7 @@
         const div = document.createElement('div');
         div.className = 'status-banner status-ok';
         div.style.margin = '2px 0';
-        div.innerHTML = `✅ <strong>Part #${x} validée (Gardien ${x} sur ${n}) :</strong> Somme de contrôle <code>${actualCsum}</code> certifiée conforme.`;
+        div.innerHTML = `✅ <strong>Part #${x} validée (Gardien ${x} sur ${n}) :</strong> Somme de contrôle <code>${actualCsum}</code> vérifiée.`;
         feedbackDiv.appendChild(div);
       }
 
