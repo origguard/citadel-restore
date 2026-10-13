@@ -141,6 +141,31 @@ if (decryptedSha256 !== vault.sha256Original) {
 
 console.log('  -> ✓ Correspondance stricte SHA-256 octet pour octet.\n');
 
+console.log('[5] Contrôle d\'immuabilité des versions scellées (FROZEN_RELEASES.json)...');
+const registryFile = path.resolve(__dirname, '../FROZEN_RELEASES.json');
+if (!fs.existsSync(registryFile)) {
+  throw new Error('FROZEN_RELEASES.json introuvable !');
+}
+const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+const latestFrozen = registry.releases.find(r => r.version === registry.canonical_latest);
+if (!latestFrozen) {
+  throw new Error('Version canonique absente de FROZEN_RELEASES.json');
+}
+
+const restoreHtmlPath = path.resolve(__dirname, '../restore.html');
+const restoreHtmlBuf = fs.readFileSync(restoreHtmlPath);
+const restoreHtmlHash = sha256Hex(restoreHtmlBuf);
+
+console.log(`  - Version canonique déclarée : ${latestFrozen.version}`);
+console.log(`  - Taille en octets : ${restoreHtmlBuf.length} (attendu: ${latestFrozen.size})`);
+console.log(`  - SHA-256 calculé  : ${restoreHtmlHash}`);
+console.log(`  - SHA-256 gelé     : ${latestFrozen.sha256}`);
+
+if (restoreHtmlBuf.length !== latestFrozen.size || restoreHtmlHash !== latestFrozen.sha256) {
+  throw new Error('VIOLATION IMMUABILITÉ : restore.html a été altéré par rapport au registre gelé !');
+}
+console.log('  -> ✓ restore.html est strictement conforme au registre gelé d\'immuabilité.\n');
+
 console.log('======================================================================');
-console.log('SUCCÈS : TOUS LES TESTS MATHEMATIQUES ET FORENSIQUES ONT PASSÉ (100% OK)');
+console.log('SUCCÈS : TOUS LES TESTS MATHEMATIQUES, FORENSIQUES ET D\'IMMUABILITÉ ONT PASSÉ (100% OK)');
 console.log('======================================================================\n');

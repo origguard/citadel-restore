@@ -77,11 +77,17 @@ OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e
 * It makes zero `fetch()`, `XMLHttpRequest`, `WebSocket`, or `sendBeacon` calls.
 * You can run it with Wi-Fi disabled, in an isolated VM, or on a permanently air-gapped machine running an offline live OS.
 
-### 5. Archival Hash & Integrity Pinning
-The canonical standalone release of `restore.html` v1.2.0 is cryptographically pinned across all distributions (GitHub, USB air-locks, physical custody booklets, and web archive):
+### 5. Archival Hash Pinning & Strict Immutability Policy
+The canonical standalone recovery engine `restore.html` v1.2.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
 * **Release Version**: `1.2.0`
-* **File Size**: `25157 bytes` (24.5 KB)
+* **File Size**: `25157 bytes` (24.6 KB)
 * **SHA-256**: `aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca`
+
+#### The Immutability Guarantee
+Because this SHA-256 hash is printed on physical paper custody booklets deposited in vaults or with notaries, **published restore releases are strictly immutable**:
+* **Zero modification**: Once registered in `FROZEN_RELEASES.json`, a published release is never modified (no typo fixes, no translations, no retroactive edits).
+* **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version (e.g. `v1.3.0`) alongside previous releases.
+* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.2.0.html`) for life.
 
 Verify locally on any operating system:
 ```bash

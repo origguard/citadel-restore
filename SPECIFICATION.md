@@ -96,3 +96,13 @@ The 8-character checksum enables instantaneous client-side validation:
   $$\text{AAD} = \text{"ORIGGUARD-CITADEL-"} \,\|\, \text{sha256Original}$$
 * **Verification**: Decryption will fail cryptographically if any byte of the ciphertext, IV, AAD, or master key is tampered with.
 * **Integrity Gate**: Once decrypted, the plaintext is hashed with SHA-256 and compared bit-for-bit to `sha256Original`.
+
+---
+
+## 5. Frozen Immutability Policy
+
+Because custody booklets with printed SHA-256 hashes are placed in safes and notary archives, published releases of the offline engine cannot be mutated retroactively.
+
+* **Registry**: All official recovery engine releases are cataloged in `FROZEN_RELEASES.json`.
+* **Immutability Enforcement**: Automated build guards verify that every historical release file in `restore/vX.Y.Z.html` matches its declared size and SHA-256 hash byte-for-byte.
+* **Evolution via Side-by-Side Releases**: Any future patch, improvement, or translation is published as a distinct semantic version (e.g. `v1.3.0.html`) while keeping all prior releases permanently intact.
