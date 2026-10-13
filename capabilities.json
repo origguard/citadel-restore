@@ -1,43 +1,244 @@
 {
+  "//": "Registre des capacités de CitadelHub. DEUX états seulement : PROVEN, qui porte obligatoirement sa mesure sur le livrable final, ou TODO. Il n'y a pas de troisième état : « probablement bon » n'existe pas ici. Une ligne TODO ne va ni sur une page de vente, ni dans un devis, ni sur un fascicule, ni dans un billet. Validateur : node tools/clair-claims.mjs --target .",
   "product": "CitadelHub",
   "vendor": "OrigGuard Sovereign Technologies",
-  "version": "1.4.0",
-  "status": "PRODUCTION",
-  "last_audited": "2026-10-13T16:00:00Z",
-  "specification": "https://github.com/origguard/citadel-restore/blob/main/SPECIFICATION.md",
-  "repository": "https://github.com/origguard/citadel-restore",
-  "capabilities": {
-    "execution_environment": {
-      "mode": "100% in-browser RAM execution",
-      "network_policy": "No data sent to any server",
-      "dependencies": "Zero external dependencies, zero CDN, zero analytics, zero third-party telemetry",
-      "runtime_requirement": "Standard Web Browser with native WebCrypto API"
+  "registre_ancre_sur": {
+    "commit": "9103b06",
+    "depot": "https://github.com/origguard/citadel-restore",
+    "version_canonique": "v1.4.0",
+    "mesures_relevees_le": "2026-10-13",
+    "relevees_par": "les outils nommés dans chaque ligne, exécutés sur cet arbre",
+    "//": "« relevé » et non « audité » : aucun auditeur tiers n'est intervenu, et le registre n'en invoque aucun."
+  },
+  "surfaces": [
+    "README.md",
+    "SPECIFICATION.md",
+    "restore/index.html",
+    "restore.html",
+    "FROZEN_RELEASES.json"
+  ],
+  "surfaces_hors_depot": {
+    "//": "Les surfaces commerciales vivent dans le dépôt du site. Le même registre doit y être exécuté, sinon la mesure ne couvre pas les pages que les clients lisent.",
+    "chemins": [
+      "dist-hostinger-public_html/index.html",
+      "dist-hostinger-public_html/cockpit.html",
+      "dist-hostinger-public_html/guide.html",
+      "dist-hostinger-public_html/terms.html",
+      "dist-hostinger-public_html/privacy.html",
+      "dist-hostinger-public_html/assets/i18n-landing.js"
+    ]
+  },
+  "capabilities": [
+    {
+      "claim": "restauration par quorum Shamir K parmi N, hors ligne",
+      "status": "PROVEN",
+      "measure": "test/test_restore.js sur 9103b06, code de sortie 0 : conteneur .citadel-vault validé, 3 parts OGCITADEL aux sommes exactes, interpolation de Lagrange sur GF(2^8) avec K=2 sur les parts 1 et 3, déchiffrement AES-256-GCM, empreinte SHA-256 pré-chiffrement retrouvée octet pour octet",
+      "terms": [
+        "quorum",
+        "Shamir",
+        "restaur",
+        "K parmi N",
+        "K-of-N"
+      ]
     },
-    "cryptography": {
-      "symmetric_cipher": "AES-256-GCM (256-bit key, 96-bit IV, 128-bit authentication tag)",
-      "associated_data": "ORIGGUARD-CITADEL-<sha256Original>",
-      "secret_sharing": "Shamir Secret Sharing over GF(2^8) (Lagrange interpolation)",
-      "standard_quorums": ["2-of-3", "3-of-3"],
-      "token_format": "OGCITADEL-<index>-<threshold>-<total>-<hex_data>-<checksum>",
-      "integrity_verification": "SHA-256 pre-encryption digest matched bit-for-bit upon recovery",
-      "merkle_integrity": "Local Merkle root binding document digest and initialization vector"
+    {
+      "claim": "restaurateur autonome en un seul fichier, sans dépendance",
+      "status": "PROVEN",
+      "measure": "restore/v1.4.0.html mesuré depuis le dépôt public à 9103b06 : 26 095 octets, SHA-256 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4, concordant avec checksums.sha256 et FROZEN_RELEASES.json",
+      "terms": [
+        "autonome",
+        "sans dépendance",
+        "un seul fichier",
+        "standalone",
+        "single file"
+      ]
     },
-    "physical_artifacts": {
-      "format": "A4 printable custody booklets",
-      "error_detection": "8-character real-time keystroke checksum with character position locator",
-      "offline_recovery": "Standalone restore.html (26,095 bytes, SHA-256: 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4)"
+    {
+      "claim": "licence perpétuelle sans activation, sans contrôle en ligne, sans révocation",
+      "status": "PROVEN",
+      "measure": "restore/v1.4.0.html à 9103b06 : zéro occurrence de licen[cs]e, activat, revoc, serial, trial, expir, subscription, abonnement, entitle ; une seule URL absolue dans le fichier, https://citadelhub.cloud/restore/ (index des archives). test_restore.js restaure à partir des seules parts et du conteneur, sans aucune entrée de licence. Frontière : ces motifs sur ce fichier à ce commit — pas une preuve d'absence de tout mécanisme concevable",
+      "terms": [
+        "licence perpétuelle",
+        "sans activation",
+        "aucune activation",
+        "sans révocation",
+        "aucune révocation",
+        "paiement unique"
+      ]
     },
-    "tested_boundaries": {
-      "max_recommended_ram_capsule": "10 MB in browser memory",
-      "tested_quorums": ["2/3", "3/3"],
-      "immutability_enforced": true
+    {
+      "claim": "les quatre archives gelées sont présentes et concordent avec le registre",
+      "status": "PROVEN",
+      "measure": "sha256sum -c checksums.sha256 sur 9103b06 : 5/5 OK, code 0 ; test_restore.js étape 5 : v1.0.0 19 048 o, v1.2.0 25 157 o, v1.3.0 26 033 o, v1.4.0 26 095 o, chacune conforme à son empreinte gelée",
+      "terms": [
+        "archives gelées",
+        "versions scellées",
+        "frozen releases"
+      ]
     },
-    "roadmap_and_limitations": {
-      "not_provided": [
-        "No centralized key recovery or cloud backup",
-        "No certified legal eIDAS qualification (operates as a private technical custody and cryptographic proof artifact)",
-        "Arbitrary quorums (>3 shares) or larger payloads (>10 MB) require explicit client configuration and hardware memory"
+    {
+      "claim": "v1.3.0 est identique à son scellé d'origine",
+      "status": "PROVEN",
+      "measure": "git show eb5b9a5:restore/v1.3.0.html et le fichier présent à 9103b06 ont la même empreinte SHA-256 24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7 pour 26 033 octets. La référence est l'historique Git, que le présent ne peut pas modifier. Voir amendments dans FROZEN_RELEASES.json pour la fenêtre pendant laquelle ce nom a porté d'autres octets",
+      "terms": [
+        "rectification",
+        "erratum v1.3.0"
+      ]
+    },
+    {
+      "claim": "un garde compare les octets servis en production au registre et refuse de sortir vert sans mesure",
+      "status": "PROVEN",
+      "measure": "test/test_guard_served.mjs sur 9103b06, 8/8 cas, code 0 : chaque cas asserte le code exact attendu, dont serveur injoignable → 2 (jamais 0) et base locale refusée sans --self-test",
+      "terms": [
+        "garde des octets servis",
+        "guard_served"
+      ]
+    },
+    {
+      "claim": "aucune donnée envoyée à un serveur",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "local-guard --strict en code 0 sur l'arbre livré",
+      "releve": "2026-10-13 sur 9103b06 : code 1, 9 mécanismes. Dans le restaurateur lui-même, ligne 609 fetch(window.location.href, { cache: 'no-store' }) — l'auto-vérification d'empreinte — et ligne 586 a.href = url, destination assemblée à l'exécution. Précision utile et insuffisante pour annoncer : aucun secret ne transite par ces deux mécanismes, mais ouvert en HTTP le fichier redemande bien sa propre URL au serveur. Tant que le code n'est pas 0, la phrase ne s'écrit pas",
+      "terms": [
+        "aucune donnée envoyée",
+        "aucune donnee envoyee",
+        "zero egress",
+        "zero network",
+        "sans appel réseau",
+        "aucune requête réseau",
+        "zéro requête",
+        "air-gap",
+        "airgap",
+        "100 % autonome",
+        "100% autonome",
+        "0 octet vers",
+        "zéro octet vers",
+        "octet vers le cloud"
+      ]
+    },
+    {
+      "claim": "aucune télémétrie",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "local-guard --strict en code 0, plus l'absence mesurée de tout point de collecte dans l'arbre livré",
+      "releve": "2026-10-13 : non mesuré séparément. La même porte que la ligne précédente la commande, et elle est en code 1",
+      "terms": [
+        "zéro télémétrie",
+        "aucune télémétrie",
+        "sans télémétrie",
+        "no telemetry",
+        "zero analytics",
+        "zéro analytique"
+      ]
+    },
+    {
+      "claim": "immuabilité des archives publiées",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "guard_served.mjs en code 0 contre https://citadelhub.cloud",
+      "releve": "2026-10-13 : code 1, 3 fautes. v1.3.0 servi à 26 095 o / 08f2217c au lieu de 26 033 o / 24938b8e ; v1.4.0 absent en HTTP 404 ; restore.html servi à 08f2217c au lieu de 273e3782 — même taille, empreinte différente. Le dépôt est rectifié, le site ne l'est pas encore",
+      "terms": [
+        "immuable",
+        "immutable",
+        "inviolable",
+        "indélébile",
+        "immutability_enforced",
+        "perpetual verification"
+      ]
+    },
+    {
+      "claim": "capsules traitées en mémoire jusqu'à la borne annoncée",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "sceller une capsule à la borne annoncée et une au-dessus, consigner le comportement observé des deux, et n'annoncer que la borne éprouvée",
+      "releve": "2026-10-13 : aucun scellement à la limite n'a été effectué. La borne de 10 Mo figurant dans les pages est recommandée, pas éprouvée",
+      "terms": [
+        "100 Mo",
+        "100 MB",
+        "500 Mo",
+        "10 Mo",
+        "jusqu'à",
+        "en RAM",
+        "en mémoire vive"
+      ]
+    },
+    {
+      "claim": "quorums au-delà de 3 parts",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "un aller-retour 3-parmi-5 complet — scellement, distribution des parts, restauration — en code 0",
+      "releve": "2026-10-13 : éprouvés à ce jour, 2/3 et 3/3 seulement, par test_restore.js. Le préréglage 3/5 a été retiré du cockpit",
+      "terms": [
+        "5 parts",
+        "5 shares",
+        "jusqu'à 5",
+        "quorums personnalisés",
+        "3/5"
+      ]
+    },
+    {
+      "claim": "fascicules A4 haute définition sans filigrane",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": "rendre les deux variantes, avec et sans filigrane, et comparer les sorties",
+      "releve": "2026-10-13 : non mesuré",
+      "terms": [
+        "sans filigrane",
+        "haute définition",
+        "A4 HD",
+        "no watermark"
+      ]
+    },
+    {
+      "claim": "horodatage opposable",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": null,
+      "pourquoi_non_mesurable": "aucune mesure n'a été définie, et la question est juridique autant que technique : l'opposabilité se décide devant un juge, pas dans une suite de tests. Ne pas annoncer, et ne pas citer d'article de code à l'appui",
+      "terms": [
+        "horodatage opposable",
+        "horodatage qualifié",
+        "qualified timestamp",
+        "force probante",
+        "valeur probante",
+        "commencement de preuve",
+        "1362",
+        "eIDAS"
+      ]
+    },
+    {
+      "claim": "conservation à vie, scellements illimités",
+      "status": "TODO",
+      "measure": null,
+      "measure_attendue": null,
+      "pourquoi_non_mesurable": "une durée illimitée ne peut pas être établie par une mesure. Ce qui peut être décrit, sans être garanti, c'est la pérennité du format HTML et l'absence de dépendance à un service. La licence, elle, est perpétuelle et cette ligne-là est mesurée plus haut — ne pas confondre les deux",
+      "terms": [
+        "à vie",
+        "pour toujours",
+        "à perpétuité",
+        "50 ans",
+        "pérennité 50",
+        "conservation illimitée",
+        "scellements illimités",
+        "lifetime storage",
+        "for life"
       ]
     }
+  ],
+  "non_fourni": [
+    "aucun recouvrement centralisé des clés, aucune sauvegarde dans le nuage",
+    "aucune qualification eIDAS, aucune certification : le produit est un artefact technique privé de séquestre et de preuve cryptographique",
+    "aucun auditeur tiers n'est intervenu à ce jour ; le mot « audit » n'est employé nulle part dans ce registre",
+    "les quorums au-delà de 3 parts et les capsules au-delà de la borne éprouvée relèvent d'une configuration explicite du client, sur son matériel, hors périmètre mesuré"
+  ],
+  "frontiere_du_registre": {
+    "ce_qu_il_etablit": "l'état de 14 revendications sur l'arbre 9103b06 du dépôt public, à la date de relevé, par les outils nommés dans chaque ligne",
+    "ce_qu_il_n_etablit_pas": [
+      "que les octets servis par citadelhub.cloud correspondent à cet arbre — c'est guard_served.mjs qui le mesure, et il est en code 1",
+      "que les pages commerciales respectent ce registre — elles vivent dans un autre dépôt et doivent être passées au même outil",
+      "qu'une ligne PROVEN le reste : toute modification du livrable annule sa mesure jusqu'à nouvelle exécution",
+      "qu'une ligne TODO est fausse — seulement qu'elle n'est pas mesurée, et qu'elle ne s'annonce donc pas"
+    ]
   }
 }
