@@ -9,15 +9,15 @@
       "size": 19048,
       "sha256": "4ae488130370531791f0cf4f91af7262f126ed534cd00244f2da5a67ccf8e1ca",
       "released_at": "2026-10-13T00:13:27Z",
-      "status": "IMMUTABLE_FROZEN"
+      "status": "SEALED_IN_GIT"
     },
     {
       "version": "v1.2.0",
       "filename": "restore/v1.2.0.html",
       "size": 25157,
       "sha256": "aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca",
-      "released_at": "2026-10-13T01:10:10Z",
-      "status": "IMMUTABLE_FROZEN"
+      "released_at": "2026-10-13T01:54:25Z",
+      "status": "SEALED_IN_GIT"
     },
     {
       "version": "v1.3.0",
@@ -25,7 +25,7 @@
       "size": 26033,
       "sha256": "24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7",
       "released_at": "2026-10-13T02:39:29Z",
-      "status": "IMMUTABLE_FROZEN"
+      "status": "SEALED_IN_GIT"
     },
     {
       "version": "v1.4.0",
@@ -33,7 +33,7 @@
       "size": 26095,
       "sha256": "273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4",
       "released_at": "2026-10-13T19:56:21Z",
-      "status": "IMMUTABLE_FROZEN"
+      "status": "SEALED_IN_GIT"
     }
   ],
   "amendments": [
