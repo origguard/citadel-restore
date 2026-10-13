@@ -5,7 +5,7 @@
 The Citadel recovery protocol is designed for **post-custodial survival**: ensuring that heirs, partners, or liquidators can recover mission-critical archives without depending on the original vendor, SaaS availability, remote API infrastructure, or an active subscription.
 
 The recovery environment assumes:
-* **Zero network access** (offline workstation, live USB boot, or disconnected browser).
+* **Disconnected operating environment** (offline workstation, live USB boot, or disconnected browser).
 * **Zero vendor survival** (the editor's servers, domain, and company may no longer exist).
 * **Zero software installation** (standard web browser with native WebCrypto API).
 

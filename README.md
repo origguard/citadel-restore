@@ -72,22 +72,22 @@ OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e
 * **Instant error detection**: The UI validates each token as you type.
 * **Exact character locator**: If a character is omitted, invalid, or corrupted, the tool highlights the exact 1-based character position.
 
-### 4. Zero Outbound Network Calls & Offline Operation
-* `restore.html` does not load Google Fonts, CDNs, analytics, or external stylesheets.
-* Zero third-party calls, trackers, or telemetries are emitted. When opened offline (`file://`), zero network calls are performed.
-* You can run it with Wi-Fi disabled, in an isolated VM, or on a permanently offline machine with network interfaces disabled.
+### 4. Standalone Offline Decryption
+* `restore.html` does not load external fonts, CDNs, or external stylesheets.
+* When opened offline via the file scheme (`file://`), execution operates entirely in local browser memory without outbound requests.
+* You can run it with Wi-Fi disabled, in an isolated VM, or on a disconnected workstation.
 
-### 5. Archival Hash Pinning & Strict Immutability Policy
+### 5. Archival Hash Pinning & Versioned Historical Sealing
 The canonical standalone recovery engine `restore.html` v1.4.0 is permanently frozen and registered in `FROZEN_RELEASES.json`.
 * **Release Version**: `1.4.0`
 * **File Size**: `26095 bytes` (25.5 KB)
 * **SHA-256**: `273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4`
 
-#### The Immutability Guarantee
-Because this SHA-256 hash is printed on physical paper custody booklets deposited in vaults or with notaries, **published restore releases are strictly immutable**:
+#### Historical Sealing Policy
+Because this SHA-256 hash is printed on physical custody booklets deposited in vaults or with notaries, **published restore releases are sealed in Git history**:
 * **Zero modification**: Once registered in `FROZEN_RELEASES.json`, a published release is never modified (no typo fixes, no translations, no retroactive edits).
-* **Side-by-side progression**: Any future enhancements or fixes are published under a new semantic version alongside previous releases.
-* **Perpetual verification**: Physical booklets in circulation retain their mathematical integrity against their designated immutable archive file (`https://citadelhub.cloud/restore/v1.4.0.html`, `https://citadelhub.cloud/restore/v1.3.0.html`, `https://citadelhub.cloud/restore/v1.2.0.html`) for life.
+* **Side-by-side progression**: Any future enhancements or fixes are published under an incremented semantic version alongside previous releases.
+* **Historical reference**: Physical booklets in circulation retain their verification baseline against their designated versioned archive file (`https://citadelhub.cloud/restore/v1.4.0.html`, `https://citadelhub.cloud/restore/v1.3.0.html`, `https://citadelhub.cloud/restore/v1.2.0.html`).
 
 Verify all frozen archives locally on any operating system:
 ```bash
