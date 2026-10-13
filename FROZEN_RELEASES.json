@@ -1,6 +1,6 @@
 {
   "policy": "STRICT_IMMUTABILITY",
-  "description": "Ce registre scelle de maniere definitive les empreintes cryptographiques et tailles de chaque version publiee de restore.html. Aucune modification, coquille ou retouche n'est permise sur une version gelee dans ce registre. Tout correctif ulterieur doit imperativement incrementer la version semantique et etre publie a cote, afin que les fascicules physiques deja imprimes continuent de verifier leur empreinte exacte pour toujours.",
+  "description": "Ce registre scelle de maniere definitive les empreintes cryptographiques et tailles de chaque version publiee de restore.html. Aucune modification, coquille ou retouche n'est permise sur une version gelee dans ce registre. Tout correctif ulterieur doit imperativement incrementer la version semantique et etre publie a cote, afin que les fascicules physiques deja imprimes restent comparables a l'archive exacte dont ils impriment le nom et l'empreinte.",
   "canonical_latest": "v1.4.0",
   "releases": [
     {
