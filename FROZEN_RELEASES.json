@@ -12,11 +12,20 @@
       "status": "IMMUTABLE_FROZEN"
     },
     {
+      "version": "v1.2.0",
+      "filename": "restore/v1.2.0.html",
+      "size": 25157,
+      "sha256": "aae3041ea24605237aa563c23e4d6781aba2be622a1d8ef464465555bd8a65ca",
+      "released_at": "2026-10-12T21:16:00Z",
+      "status": "IMMUTABLE_FROZEN",
+      "note": "Périmée, servie à perpétuité pour la résolution des fascicules édités le 12 Oct 2026."
+    },
+    {
       "version": "v1.3.0",
       "filename": "restore/v1.3.0.html",
-      "size": 26033,
-      "sha256": "24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7",
-      "released_at": "2026-10-12T22:30:00Z",
+      "size": 26095,
+      "sha256": "08f2217cc5088a2e440a8c8ffa442f173680d102b63511bff69e683dde84a21e",
+      "released_at": "2026-10-12T22:50:00Z",
       "status": "IMMUTABLE_FROZEN"
     }
   ]

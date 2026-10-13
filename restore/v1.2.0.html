@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="citadel-restore-version" content="1.2.0">
+  <title>CitadelHub™ · Restaurateur Autonome de Coffre Souverain (.citadel-vault)</title>
+  <style>
+    :root {
+      --bg: #040711;
+      --panel: #0A101D;
+      --border: #162238;
+      --border-bright: #22365A;
+      --teal: #2DD4BF;
+      --teal-glow: rgba(45, 212, 191, 0.2);
+      --emerald: #10B981;
+      --amber: #F59E0B;
+      --red: #EF4444;
+      --text: #E2E8F0;
+      --muted: #64748B;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .badge-sovereign {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid rgba(45, 212, 191, 0.3);
+      color: var(--teal);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .drop-zone {
+      border: 2px dashed var(--border-bright);
+      border-radius: 8px;
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(10, 16, 29, 0.5);
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--teal);
+      background: rgba(45, 212, 191, 0.05);
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+    }
+    .meta-item {
+      background: rgba(4, 7, 17, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .meta-label {
+      color: var(--muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 3px;
+    }
+    .meta-val {
+      color: #FFFFFF;
+      font-weight: 600;
+      word-break: break-all;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: rgba(4, 7, 17, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 10px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 10px var(--teal-glow);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      width: 100%;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: #040711;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #5EEAD4;
+      box-shadow: 0 0 15px var(--teal-glow);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .status-banner {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .status-ok { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--emerald); color: #6EE7B7; }
+    .status-warn { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--amber); color: #FCD34D; }
+    .status-err { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--red); color: #FCA5A5; }
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 24px;
+      font-family: var(--font-mono);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="badge-sovereign">
+        <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--emerald);"></span>
+        OUTIL UNIVERSEL DÉCONNECTÉ · AIR-GAP LOCAL
+      </div>
+      <h1 class="title">Restauration d'Urgence de Coffre Souverain <span id="app-restore-version" style="font-size:16px;color:var(--teal);font-weight:600;">v1.2.0</span></h1>
+      <p class="subtitle">
+        Cet utilitaire est 100 % autonome, sans serveur et sans appel réseau. Il permet à vos héritiers ou associés de reconstituer vos documents originaux même si CitadelHub venait à disparaître.
+      </p>
+    </header>
+
+    <!-- ÉTAPE 1 : CHARGEMENT DU COFFRE -->
+    <section class="card">
+      <h2 class="card-title"><span>📂</span> Étape 1 : Fichier de Coffre (.citadel-vault)</h2>
+      <div class="drop-zone" id="vault-drop-zone" onclick="document.getElementById('vault-file-input').click()">
+        <p style="font-size:13px;font-weight:600;color:#FFFFFF;margin-bottom:4px;">
+          Glissez-déposez votre fichier <code>.citadel-vault</code> ici
+        </p>
+        <p style="font-size:11px;color:var(--muted);">ou cliquez pour parcourir votre machine locale</p>
+        <input type="file" id="vault-file-input" accept=".citadel-vault,.json" style="display:none;" onchange="handleVaultSelect(event)">
+      </div>
+
+      <div id="vault-details" style="display:none;" class="meta-grid">
+        <div class="meta-item">
+          <span class="meta-label">Document Scellé</span>
+          <span id="meta-doc-name" class="meta-val" style="color:var(--teal);">--</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Taille Originale</span>
+          <span id="meta-doc-size" class="meta-val">--</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Quorum de Shamir Exigé</span>
+          <span id="meta-quorum" class="meta-val" style="color:#6EE7B7;">--</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Version du Format</span>
+          <span id="meta-version" class="meta-val">Format v1 (AES-256-GCM)</span>
+        </div>
+        <div class="meta-item" style="grid-column: 1 / -1;">
+          <span class="meta-label">Empreinte SHA-256 de Référence</span>
+          <span id="meta-sha256" class="meta-val" style="font-size:11px;color:#CBD5E1;">--</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 2 : SAISIE DES PARTS DE QUORUM -->
+    <section class="card" id="shares-section" style="opacity:0.6;pointer-events:none;">
+      <h2 class="card-title"><span>🔑</span> Étape 2 : Parts de Quorum des Gardiens</h2>
+      <div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.25);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11.5px;line-height:1.5;color:#CBD5E1;">
+        <strong style="color:var(--teal);">⌨️ Saisie Manuelle & Détection Immédiate d'Erreurs :</strong>
+        Pour fonctionner hors-ligne sans dépendance tierce (outil autoportant de 25 Ko sans caméra externe), saisissez ou collez directement les codes textuels imprimés sous le QR-Code de vos fascicules. Chaque part est validée individuellement par sa somme de contrôle (checksum) en temps réel.
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">
+        Collez ci-dessous au moins le nombre de parts requis (ex: 2 parts sur 3). Chaque part peut être séparée par un saut de ligne ou un espace :
+      </p>
+      <textarea id="shares-input" placeholder="Collez ou tapez vos parts ici (ex: OGCITADEL-1-2-3-...)&#10;Chaque part est contrôlée en direct caractère par caractère..." oninput="evaluateShares()"></textarea>
+
+      <!-- Liste détaillée de feedback par part -->
+      <div id="shares-feedback" style="display:none;margin-top:10px;font-family:var(--font-mono);font-size:11.5px;display:flex;flex-direction:column;gap:6px;"></div>
+
+      <div id="quorum-gauge" class="status-banner status-warn" style="display:none;margin-top:12px;">
+        <span id="gauge-icon">⏳</span>
+        <span id="gauge-text">En attente de parts...</span>
+      </div>
+    </section>
+
+    <!-- ÉTAPE 3 : DÉCHIFFREMENT ET EXPORT -->
+    <section class="card" id="restore-section" style="opacity:0.6;pointer-events:none;">
+      <h2 class="card-title"><span>🛡️</span> Étape 3 : Reconstitution & Déchiffrement</h2>
+      <button id="btn-restore" class="btn btn-primary" onclick="executeRestore()" disabled>
+        <span>🔓</span> <span>DÉCHIFFRER & TÉLÉCHARGER LE FICHIER ORIGINAL</span>
+      </button>
+
+      <div id="restore-result" class="status-banner" style="display:none;"></div>
+    </section>
+
+    <footer class="footer">
+      <div style="background:rgba(10,16,29,0.8);border:1px solid rgba(22,34,56,0.8);border-radius:8px;padding:12px;margin-bottom:12px;text-align:left;">
+        <div style="color:var(--teal);font-weight:bold;margin-bottom:4px;">📜 Registre des Versions Autonomes Pérennes :</div>
+        <div style="color:#94A3B8;margin-bottom:4px;">&bull; <strong>v1.2.0 (Version Active)</strong> (13 Oct 2026) : Contrôle temps réel caractère par caractère et sommes de contrôle (checksums) &bull; <a href="/restore/v1.2.0.html" style="color:var(--teal);text-decoration:underline;">restore/v1.2.0.html</a></div>
+        <div style="color:#64748B;font-size:11px;">&bull; <strong>v1.1.0</strong> (12 Oct 2026) : Version intermédiaire &bull; <a href="/restore/v1.1.0.html" style="color:#64748B;text-decoration:underline;">restore/v1.1.0.html</a></div>
+        <div style="color:#64748B;font-size:11px;">&bull; <strong>v1.0.0 (Archive Initiale)</strong> (12 Oct 2026) : SHA-256 <code>4ae488130370531791f0cf4f91af7262f126ed534cd00244f2da5a67ccf8e1ca</code> &bull; <a href="/restore/v1.0.0.html" style="color:var(--teal);text-decoration:underline;">restore/v1.0.0.html</a></div>
+      </div>
+      <p>CitadelHub™ Sovereign Restorer · Zero-Egress Air-Gap Engine</p>
+      <p style="color:var(--muted);margin-top:4px;">
+        Ce fichier est 100 % autonome (25 Ko). Conservez-le avec votre coffre sur clé USB ou disque externe pour permettre le déchiffrement dès que le quorum est réuni.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // =========================================================================
+    // TABLES ARITHMÉTIQUES DU CORPS FINI GF(2^8) (POLYNÔME AES 0x11D)
+    // =========================================================================
+    const EXP_GF = new Uint8Array(512);
+    const LOG_GF = new Uint8Array(256);
+    (function initGF() {
+      let x = 1;
+      for (let i = 0; i < 255; i++) {
+        EXP_GF[i] = x;
+        EXP_GF[i + 255] = x;
+        LOG_GF[x] = i;
+        x = (x << 1) ^ (x & 0x80 ? 0x11d : 0);
+      }
+      LOG_GF[0] = 0;
+    })();
+
+    function gfAdd(a, b) { return a ^ b; }
+    function gfMul(a, b) {
+      if (a === 0 || b === 0) return 0;
+      return EXP_GF[LOG_GF[a] + LOG_GF[b]];
+    }
+    function gfDiv(a, b) {
+      if (b === 0) throw new Error('Division par zéro dans GF(2^8)');
+      if (a === 0) return 0;
+      return EXP_GF[(LOG_GF[a] - LOG_GF[b] + 255) % 255];
+    }
+
+    // Interpolation de Lagrange GF(2^8) pour reconstituer la clé secrète AES-256
+    function combineSecretShamirGF256(sharesList, threshold) {
+      const activeShares = sharesList.slice(0, threshold);
+      const secretLen = activeShares[0].data.length;
+      const reconstructed = new Uint8Array(secretLen);
+
+      for (let b = 0; b < secretLen; b++) {
+        let sum = 0;
+        for (let i = 0; i < threshold; i++) {
+          const xi = activeShares[i].x;
+          const yi = activeShares[i].data[b];
+          let num = 1;
+          let den = 1;
+          for (let j = 0; j < threshold; j++) {
+            if (i !== j) {
+              const xj = activeShares[j].x;
+              num = gfMul(num, xj);
+              den = gfMul(den, gfAdd(xi, xj));
+            }
+          }
+          const lagrange = gfDiv(num, den);
+          sum = gfAdd(sum, gfMul(yi, lagrange));
+        }
+        reconstructed[b] = sum;
+      }
+      return reconstructed;
+    }
+
+    async function computeBufferSha256(buffer) {
+      const digest = await crypto.subtle.digest('SHA-256', buffer);
+      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Octets';
+      const k = 1024;
+      const sizes = ['Octets', 'Ko', 'Mo', 'Go'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // =========================================================================
+    // LOGIQUE DE RESTAURATION DU COFFRE
+    // =========================================================================
+    let activeVault = null;
+    let parsedValidShares = [];
+
+    function handleVaultSelect(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      loadVaultFromFile(file);
+    }
+
+    // Support Drag & Drop
+    const dropZone = document.getElementById('vault-drop-zone');
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) loadVaultFromFile(e.dataTransfer.files[0]);
+    });
+
+    function loadVaultFromFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (!data.ciphertextBase64 || !data.ivHex || !data.sha256Original) {
+            alert('Format de coffre invalide : données chiffrées ou empreintes absentes.');
+            return;
+          }
+
+          activeVault = data;
+          document.getElementById('meta-doc-name').textContent = data.documentName || 'Document Restoré';
+          document.getElementById('meta-doc-size').textContent = formatBytes(data.fileSize || 0);
+          document.getElementById('meta-quorum').textContent = `${data.threshold} parts obligatoires (sur ${data.totalShares} associés)`;
+          document.getElementById('meta-version').textContent = `Format v${data.formatVersion || 1} (AES-256-GCM)`;
+          document.getElementById('meta-sha256').textContent = data.sha256Original;
+
+          document.getElementById('vault-details').style.display = 'grid';
+          document.getElementById('shares-section').style.opacity = '1';
+          document.getElementById('shares-section').style.pointerEvents = 'auto';
+
+          evaluateShares();
+        } catch (err) {
+          alert('Erreur lors de la lecture du fichier .citadel-vault : ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    async function evaluateShares() {
+      if (!activeVault) return;
+
+      const rawInput = document.getElementById('shares-input').value;
+      const feedbackDiv = document.getElementById('shares-feedback');
+      const gauge = document.getElementById('quorum-gauge');
+      const gaugeText = document.getElementById('gauge-text');
+      const gaugeIcon = document.getElementById('gauge-icon');
+      const btnRestore = document.getElementById('btn-restore');
+      const restoreSection = document.getElementById('restore-section');
+
+      feedbackDiv.innerHTML = '';
+      parsedValidShares = [];
+
+      // Découper par ligne ou bloc
+      const candidateTokens = rawInput.split(/\s+/).filter(t => t.trim().length > 0);
+      const seenIndices = new Set();
+      let feedbackCount = 0;
+
+      for (const token of candidateTokens) {
+        if (!token.toUpperCase().startsWith('OGCITADEL')) continue;
+        feedbackCount++;
+
+        const segs = token.split('-');
+        if (segs.length < 6) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-err';
+          div.style.margin = '2px 0';
+          div.innerHTML = `⚠️ <strong>Format incomplet :</strong> « ${escapeHtml(token.slice(0, 30))}... » attend 6 segments séparés par des tirets (OGCITADEL-X-K-N-HEX-CHECKSUM).`;
+          feedbackDiv.appendChild(div);
+          continue;
+        }
+
+        const x = parseInt(segs[1], 10);
+        const k = parseInt(segs[2], 10);
+        const n = parseInt(segs[3], 10);
+        const hex = segs[4];
+        const providedCsum = segs[5];
+
+        // 1. Contrôle des caractères hexadécimaux
+        let invalidCharPos = -1;
+        let invalidChar = '';
+        for (let i = 0; i < hex.length; i++) {
+          if (!/[0-9a-fA-F]/.test(hex[i])) {
+            invalidCharPos = i;
+            invalidChar = hex[i];
+            break;
+          }
+        }
+
+        if (invalidCharPos !== -1) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-err';
+          div.style.margin = '2px 0';
+          div.innerHTML = `❌ <strong>Part #${x} — Caractère erroné :</strong> caractère non hexadécimal « <strong>${escapeHtml(invalidChar)}</strong> » détecté à la position ${invalidCharPos + 1} de la clé.`;
+          feedbackDiv.appendChild(div);
+          continue;
+        }
+
+        if (hex.length % 2 !== 0 || hex.length < 32) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-err';
+          div.style.margin = '2px 0';
+          div.innerHTML = `❌ <strong>Part #${x} — Longueur invalide :</strong> la clé comporte ${hex.length} caractères (longueur attendue paire et complète).`;
+          feedbackDiv.appendChild(div);
+          continue;
+        }
+
+        // 2. Vérification de la somme de contrôle (Checksum SHA-256)
+        const dataBytes = new Uint8Array(hex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+        const actualCsum = (await computeBufferSha256(dataBytes.buffer)).slice(0, 8);
+
+        if (actualCsum.toLowerCase() !== providedCsum.toLowerCase()) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-err';
+          div.style.margin = '2px 0';
+          div.innerHTML = `❌ <strong>Part #${x} — Erreur de saisie :</strong> la somme de contrôle ne correspond pas (fourni : <code>${escapeHtml(providedCsum)}</code>, calculé : <code>${actualCsum}</code>). Vérifiez votre saisie caractère par caractère.`;
+          feedbackDiv.appendChild(div);
+          continue;
+        }
+
+        // 3. Vérification de la cohérence avec le coffre chargé
+        if (k !== activeVault.threshold || n !== activeVault.totalShares) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-warn';
+          div.style.margin = '2px 0';
+          div.innerHTML = `⚠️ <strong>Part #${x} — Quorum discordant :</strong> la part indique K=${k}/N=${n}, alors que ce coffre exige K=${activeVault.threshold}/N=${activeVault.totalShares}.`;
+          feedbackDiv.appendChild(div);
+        }
+
+        if (seenIndices.has(x)) {
+          const div = document.createElement('div');
+          div.className = 'status-banner status-warn';
+          div.style.margin = '2px 0';
+          div.innerHTML = `ℹ️ <strong>Part #${x} en double :</strong> cette part a déjà été prise en compte.`;
+          feedbackDiv.appendChild(div);
+          continue;
+        }
+
+        // Part 100% valide !
+        seenIndices.add(x);
+        parsedValidShares.push({ x, k, n, data: dataBytes });
+
+        const div = document.createElement('div');
+        div.className = 'status-banner status-ok';
+        div.style.margin = '2px 0';
+        div.innerHTML = `✅ <strong>Part #${x} validée (Gardien ${x} sur ${n}) :</strong> Somme de contrôle <code>${actualCsum}</code> vérifiée.`;
+        feedbackDiv.appendChild(div);
+      }
+
+      feedbackDiv.style.display = feedbackCount > 0 ? 'flex' : 'none';
+      gauge.style.display = 'flex';
+
+      if (parsedValidShares.length >= activeVault.threshold) {
+        gauge.className = 'status-banner status-ok';
+        gaugeIcon.textContent = '✅';
+        gaugeText.textContent = `QUORUM ATTEINT : ${parsedValidShares.length} parts valides réunies (seuil requis: ${activeVault.threshold}). Déchiffrement prêt !`;
+        restoreSection.style.opacity = '1';
+        restoreSection.style.pointerEvents = 'auto';
+        btnRestore.disabled = false;
+      } else {
+        gauge.className = 'status-banner status-warn';
+        gaugeIcon.textContent = '⏳';
+        gaugeText.textContent = `QUORUM INSUFFISANT : ${parsedValidShares.length} part(s) valide(s) sur ${activeVault.threshold} requises. Il vous manque ${activeVault.threshold - parsedValidShares.length} part(s).`;
+        btnRestore.disabled = true;
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    async function executeRestore() {
+      if (!activeVault || parsedValidShares.length < activeVault.threshold) {
+        alert('Quorum incomplet.');
+        return;
+      }
+
+      const resDiv = document.getElementById('restore-result');
+      resDiv.style.display = 'flex';
+      resDiv.className = 'status-banner status-warn';
+      resDiv.innerHTML = '<span>⚡</span> <span>Reconstitution mathématique de la clé AES-256 en cours...</span>';
+
+      try {
+        // Reconstitution de la clé maîtresse AES-256 via Shamir GF(2^8)
+        const restoredKeyBytes = combineSecretShamirGF256(parsedValidShares, activeVault.threshold);
+        const restoredCryptoKey = await crypto.subtle.importKey('raw', restoredKeyBytes, { name: 'AES-GCM' }, false, ['decrypt']);
+
+        // Décodage du ciphertext Base64
+        const binaryCipher = atob(activeVault.ciphertextBase64);
+        const cipherBytes = new Uint8Array(binaryCipher.length);
+        for (let i = 0; i < binaryCipher.length; i++) cipherBytes[i] = binaryCipher.charCodeAt(i);
+
+        const ivBytes = new Uint8Array(activeVault.ivHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+        const aad = new TextEncoder().encode('ORIGGUARD-CITADEL-' + activeVault.sha256Original);
+
+        // Déchiffrement AES-256-GCM
+        const plainBuffer = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes, additionalData: aad }, restoredCryptoKey, cipherBytes);
+
+        // Vérification stricte d'intégrité SHA-256
+        const decryptedSha = await computeBufferSha256(plainBuffer);
+        if (decryptedSha !== activeVault.sha256Original) {
+          throw new Error("L'empreinte du document déchiffré ne correspond pas au certificat d'origine.");
+        }
+
+        // Succès : Déclenchement du téléchargement immédiat
+        const mime = activeVault.mimeType || 'application/octet-stream';
+        const blob = new Blob([plainBuffer], { type: mime });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = activeVault.documentName || 'document-restaure.dat';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        resDiv.className = 'status-banner status-ok';
+        resDiv.innerHTML = `<span>🎉</span> <span>SUCCÈS ABSOLU ! Document "${activeVault.documentName}" restauré avec succès octet pour octet et téléchargé.</span>`;
+      } catch (err) {
+        resDiv.className = 'status-banner status-err';
+        resDiv.innerHTML = `<span>❌</span> <span>Échec du déchiffrement : ${err.message}</span>`;
+      }
+    }
+  </script>
+</body>
+</html>
