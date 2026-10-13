@@ -1,0 +1,43 @@
+{
+  "product": "CitadelHub",
+  "vendor": "OrigGuard Sovereign Technologies",
+  "version": "1.4.0",
+  "status": "PRODUCTION",
+  "last_audited": "2026-10-13T16:00:00Z",
+  "specification": "https://github.com/origguard/citadel-restore/blob/main/SPECIFICATION.md",
+  "repository": "https://github.com/origguard/citadel-restore",
+  "capabilities": {
+    "execution_environment": {
+      "mode": "100% in-browser RAM execution",
+      "network_policy": "No data sent to any server",
+      "dependencies": "Zero external dependencies, zero CDN, zero analytics, zero third-party telemetry",
+      "runtime_requirement": "Standard Web Browser with native WebCrypto API"
+    },
+    "cryptography": {
+      "symmetric_cipher": "AES-256-GCM (256-bit key, 96-bit IV, 128-bit authentication tag)",
+      "associated_data": "ORIGGUARD-CITADEL-<sha256Original>",
+      "secret_sharing": "Shamir Secret Sharing over GF(2^8) (Lagrange interpolation)",
+      "standard_quorums": ["2-of-3", "3-of-3"],
+      "token_format": "OGCITADEL-<index>-<threshold>-<total>-<hex_data>-<checksum>",
+      "integrity_verification": "SHA-256 pre-encryption digest matched bit-for-bit upon recovery",
+      "merkle_integrity": "Local Merkle root binding document digest and initialization vector"
+    },
+    "physical_artifacts": {
+      "format": "A4 printable custody booklets",
+      "error_detection": "8-character real-time keystroke checksum with character position locator",
+      "offline_recovery": "Standalone restore.html (26,095 bytes, SHA-256: 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4)"
+    },
+    "tested_boundaries": {
+      "max_recommended_ram_capsule": "10 MB in browser memory",
+      "tested_quorums": ["2/3", "3/3"],
+      "immutability_enforced": true
+    },
+    "roadmap_and_limitations": {
+      "not_provided": [
+        "No centralized key recovery or cloud backup",
+        "No certified legal eIDAS qualification (operates as a private technical custody and cryptographic proof artifact)",
+        "Arbitrary quorums (>3 shares) or larger payloads (>10 MB) require explicit client configuration and hardware memory"
+      ]
+    }
+  }
+}

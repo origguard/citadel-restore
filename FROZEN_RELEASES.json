@@ -35,5 +35,14 @@
       "released_at": "2026-10-13T04:00:00Z",
       "status": "IMMUTABLE_FROZEN"
     }
+  ],
+  "amendments": [
+    {
+      "date": "2026-10-13T04:00:00Z",
+      "target_version": "v1.3.0",
+      "resolution": "RECTIFICATION_ET_INCREMENTATION",
+      "description": "Erratum sur la version v1.3.0 : lors du commit b9d3f40 du 12 octobre 2026, un fichier de 26 095 octets (SHA-256: 08f2217cc5088a2e440a8c8ffa442f173680d102b63511bff69e683dde84a21e) a été temporairement servi sous le nom restore/v1.3.0.html en remplacement de la release originale de 26 033 octets (SHA-256: 24938b8efb3308eec99638ad882d73a7ccd7001557235cb7f13f49f2d6c1ccd7). Conformément à la politique d'immuabilité stricte, la version v1.3.0 a été rétablie à son état d'origine scellé (eb5b9a5), et le fichier rectifié de 26 095 octets a été canonisé sous la version v1.4.0 (SHA-256: 273e3782bc9fbca692c19a2c9a4b57c3ebee87f4b0616ce0163218147082b7b4)."
+    }
   ]
 }
+
