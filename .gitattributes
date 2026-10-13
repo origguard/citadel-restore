@@ -1,0 +1,26 @@
+# .gitattributes — citadel-restore
+#
+# ATTENTION A L'ORDRE : dans ce fichier, le DERNIER motif correspondant gagne.
+# La regle generale vient donc en premier, les exceptions scellees en dernier.
+#
+# Les archives de restore/ sont scellees a l'octet : leur SHA-256 est imprime sur
+# des fascicules deposes en coffre ou chez des notaires. Une conversion de fin de
+# ligne change ces octets, donc l'empreinte, donc fait cesser de concorder tout
+# fascicule en circulation. Mesure sur v1.4.0 : 26 095 o / 273e3782... devient
+# 26 724 o / e227ceed... par la seule substitution LF -> CRLF.
+
+# 1. Regle generale : tout en LF, quelle que soit la machine qui ecrit.
+#    Sans elle, un script Windows ecrivant en CRLF produit un diff de fichier
+#    entier qui rend le changement reel invisible a la relecture.
+* text=auto eol=lf
+
+*.json  text eol=lf
+*.md    text eol=lf
+*.mjs   text eol=lf
+*.js    text eol=lf
+
+# 2. Exceptions, en DERNIER : les artefacts scelles sont declares NON-TEXTE.
+#    Git ne les convertit alors jamais, dans aucun sens, sur aucune plateforme.
+restore.html       -text
+restore/*.html     -text
+checksums.sha256   -text
