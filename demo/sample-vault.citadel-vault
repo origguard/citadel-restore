@@ -1,0 +1,13 @@
+{
+  "documentName": "confidential-recovery-manifest.txt",
+  "fileSize": 715,
+  "threshold": 2,
+  "totalShares": 3,
+  "formatVersion": 1,
+  "sha256Original": "c3c44dc6cf51ad22f53b1930edbdb397984eb16adbaad56cbe87754f12b1b8bf",
+  "ivHex": "e35718679fac522d6f4054b3",
+  "ciphertextBase64": "ABp/ub59UFAvyihtcQfLYFz0bn6cBG2mrZdzTA9zGpPGkJtUv5XRQTS1Z3QhCpX6NetxIxEUEMR2lWLxwZcAoAep0GyBvBbUlK3S9jbqCIhLv4GjUPDS3u0DdSZc8pUW0DjdOFjTWKvYFa/JuIVgBOhHtsZGcCz0/vBGyNtbgGvRwJkk2NYNVG/hFYFFl1yu0v8Ji8dLB5RTVNRH44MK/Ph7D+2Z6g2Bno7QPffVD+mKRltQRYdXLiMRuYdsady0+B+lyY5N+x1QvShm0t69ZkvglFGhEvAaH67QQoVz1aYfQDdZSNB+zFY+psO+DLUyKq1SnfR8hpikrYKM3RreSChDMTeANkbVJGHodOGHlupd7640NhPwlF/yijgB2/R7MqR1YF6sz7BPS7CkYxsOw51dKyZZ1bnRq44szuB8ji2oK1qs1CWLCtiMJEf0PXoLNmK/RQrJM3P2zpgh4jqYk1EkphM8HvpQRNaLvAk1mRaVA9GaM9GcZxFSzC3mPIO/omFocZ136q+zJpAuScHPEq+vrcFAL3/6ta8kbQNFJ/bPCtJEORnjff/0BS+Hm3IMe65jCIeaL9Q/+4lXvY07jT1VER/7lPkkFM87fJON2t4LQoJ4iB5+BhKUc+0xx5skkMNX1aFEm6a/M4Zdkkh8DGfGoLF253fWcP4ZQDj/JfVMxx/Uyd/9bMOu0Ll+qE7McpdklQAhSok5PWRlPxTJES9MOa8OUZAEh42/nCCo6BaSZNbjDKLNjunoJL1wUJ6dUJMe5ig9PZQBPKD65yt8X67vrhUlBy7f5kd8BsBdNVBm8FF+b+aVEyggq+XTXezStvc0yRuaonrB9CVrHwQVQD+wbBiBaOBXkFclxNe18KHS0pZrHCsTpknFM1w70dl/DJFJrjSpwOomEMmKcoJi452LubCywQfnUlN9+1T/6UBsinaV7HU/Q3N1Ov2DCWJBGs5jE1jeWcMg22s=",
+  "saltHex": "ab6c43e717337cdced0df9f0ed0dc7b7",
+  "merkleRoot": "7d12773bb54c776c3dda74be2f868c168bf3dee77240c626dbfebeced30112b9",
+  "createdAt": "2026-10-13T00:10:21.871Z"
+}

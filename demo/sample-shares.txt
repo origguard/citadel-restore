@@ -1,0 +1,14 @@
+# CITADEL RECOVERY DEMO SHARES (THRESHOLD: 2 OF 3 REQUIRED)
+# Open restore.html in any browser, load sample-vault.citadel-vault,
+# and paste ANY 2 of the 3 shares below into the shares field.
+
+# Share #1 of 3 (Custodian A):
+OGCITADEL-1-2-3-c5622541e92131d6493a43dc73c1e731063ce74dc2298a7061c5088a8a13e20e-2961d81f
+
+# Share #2 of 3 (Custodian B):
+OGCITADEL-2-2-3-20f77cb04c24daed4ad468f5fe1ac80ce873d1d449d6e5b8e1634af919af6229-00addd5b
+
+# Share #3 of 3 (Custodian C):
+OGCITADEL-3-2-3-88844b142f27830f4b8e7119855326ecb2bdc3a33083c00b6a0174236830e934-3a0413b4
+
+# Expected SHA-256 of restored document: c3c44dc6cf51ad22f53b1930edbdb397984eb16adbaad56cbe87754f12b1b8bf
