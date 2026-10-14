@@ -340,7 +340,18 @@ const main = async () => {
     out("");
   }
 
-  out(`Examiné : ${lignes.length} · conformes : ${lignes.filter((l) => l.verdict === "CONFORME").length} · fautes : ${fautes} · injoignables : ${injoignables}`);
+  // Deux passes, deux décomptes. Les mélanger donnait « 5 examinés, 7 fautes »,
+  // une ligne que personne ne peut lire.
+  const nb = (p) => lignes.filter(p).length;
+  out(`Origine   : ${lignes.length} examinée(s) · ${nb((l) => l.verdict === "CONFORME")} conforme(s) · ` +
+      `${nb((l) => l.verdict !== "CONFORME" && l.verdict !== "INJOIGNABLE")} faute(s) · ` +
+      `${nb((l) => l.verdict === "INJOIGNABLE")} injoignable(s)`);
+  out(`Livraison : ${nb((l) => l.livraison)} mesurée(s) · ` +
+      `${nb((l) => l.livraison?.verdict === "LIVRAISON INTACTE")} intacte(s) · ` +
+      `${nb((l) => l.livraison?.verdict === "LIVRAISON ALTEREE")} altérée(s) · ` +
+      `${nb((l) => !l.livraison || l.livraison.verdict === "LIVRAISON NON MESUREE")} non mesurée(s)`);
+  const hotes = [...new Set(lignes.flatMap((l) => l.insertion?.hotes || []))];
+  if (hotes.length) out(`Hôtes apparus à la livraison et absents de l'origine : ${hotes.join(", ")}`);
   out("");
   out(`Ce que ce résultat établit`);
   out(`  Les octets servis aux ${lignes.length} URL ci-dessus, à l'instant de la requête,`);
