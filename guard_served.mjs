@@ -131,20 +131,54 @@ function lireRegistre(chemin) {
   return reg;
 }
 
-async function recuperer(base, chemin, timeout) {
+// Deux profils. Le premier est ce que demande un outil, le second ce que
+// demande un navigateur. Un intermédiaire (CDN, pare-feu, cache de l'hébergeur)
+// peut réécrire le HTML pour le second et pas pour le premier : mesurer un seul
+// profil, c'est mesurer ce que personne ne reçoit.
+const PROFILS = {
+  outil: { "accept": "*/*", "user-agent": "guard_served.mjs" },
+  navigateur: {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "accept-language": "fr-FR,fr;q=0.9,en;q=0.8",
+    "user-agent":
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    "upgrade-insecure-requests": "1",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+  },
+};
+
+// Ce qui a été inséré entre les deux livraisons, par préfixe et suffixe communs.
+// Aucune liste de coupables : on dérive l'insertion de la comparaison, pas d'un
+// motif connu. Une liste construite sur les cas déjà vus manque les suivants.
+function insertion(origine, livree) {
+  if (!origine || !livree || origine.equals(livree)) return null;
+  let d = 0;
+  while (d < origine.length && d < livree.length && origine[d] === livree[d]) d++;
+  let f = 0;
+  while (f < origine.length - d && f < livree.length - d &&
+         origine[origine.length - 1 - f] === livree[livree.length - 1 - f]) f++;
+  const bloc = livree.slice(d, livree.length - f).toString("utf8");
+  const hotes = [...new Set((bloc.match(/https?:\/\/([a-z0-9.-]+)/gi) || [])
+    .map((u) => u.replace(/^https?:\/\//i, "").toLowerCase()))];
+  return { octets: livree.length - origine.length, offset: d, hotes, extrait: bloc.slice(0, 220) };
+}
+
+async function recuperer(base, chemin, timeout, profil = "outil") {
   const cible = new URL(chemin.replace(/^\/+/, ""), `${base.href.replace(/\/*$/, "")}/`);
   let res;
   try {
     res = await fetch(cible, {
       redirect: "follow",
       cache: "no-store",
-      headers: { "cache-control": "no-cache", "user-agent": "guard_served.mjs" },
+      headers: { "cache-control": "no-cache", ...PROFILS[profil] },
       signal: AbortSignal.timeout(timeout),
     });
   } catch (e) {
     return { cible: cible.href, injoignable: e.message || String(e) };
   }
   const octets = Buffer.from(await res.arrayBuffer());
+  const brut = octets;
   const finale = new URL(res.url || cible.href);
   return {
     cible: cible.href,
@@ -153,6 +187,7 @@ async function recuperer(base, chemin, timeout) {
     statut: res.status,
     size: octets.length,
     sha256: empreinte(octets),
+    brut,
   };
 }
 
@@ -175,6 +210,16 @@ function juger(attendu, servi) {
   return { verdict: "CONFORME", motif: "" };
 }
 
+// Le premier verdict dit si l'ORIGINE détient l'artefact scellé. Celui-ci dit
+// si un NAVIGATEUR le reçoit. Les deux faits sont distincts et comptent tous
+// les deux : la promesse du produit porte sur ce que reçoit la personne.
+function jugerLivraison(attendu, servi) {
+  if (!servi || servi.injoignable) return { verdict: "LIVRAISON NON MESUREE", motif: servi?.injoignable || "non récupérée" };
+  if (servi.statut >= 400) return { verdict: "LIVRAISON NON MESUREE", motif: `HTTP ${servi.statut}` };
+  if (servi.sha256 === attendu.sha256) return { verdict: "LIVRAISON INTACTE", motif: "" };
+  return { verdict: "LIVRAISON ALTEREE", motif: `empreinte livrée ${court(servi.sha256)} ≠ registre ${court(attendu.sha256)}` };
+}
+
 const main = async () => {
   const opt = arguments_();
   const { url: base, degrade } = validerBase(opt.base, opt.selfTest);
@@ -185,11 +230,17 @@ const main = async () => {
   let fautes = 0;
 
   for (const r of reg.releases) {
-    const servi = await recuperer(base, r.filename, opt.timeout);
+    const servi = await recuperer(base, r.filename, opt.timeout, "outil");
     const j = juger(r, servi);
     if (j.verdict === "INJOIGNABLE") injoignables++;
     else if (j.verdict !== "CONFORME") fautes++;
-    lignes.push({ sujet: r.version, chemin: r.filename, attendu: r, servi, ...j });
+    const originePrete = j.verdict === "CONFORME" || j.verdict === "DIVERGENT";
+    const livre = originePrete ? await recuperer(base, r.filename, opt.timeout, "navigateur") : null;
+    const jl = originePrete ? jugerLivraison(r, livre) : null;
+    if (jl?.verdict === "LIVRAISON ALTEREE") fautes++;
+    else if (jl?.verdict === "LIVRAISON NON MESUREE") injoignables++;
+    const ins = livre ? insertion(servi.brut, livre.brut) : null;
+    lignes.push({ sujet: r.version, chemin: r.filename, attendu: r, servi, ...j, livre, livraison: jl, insertion: ins });
   }
 
   // La racine servie doit porter les octets de la version canonique déclarée.
@@ -200,16 +251,24 @@ const main = async () => {
     );
     process.exit(2);
   }
-  const servieRacine = await recuperer(base, CANONIQUE_SERVIE, opt.timeout);
+  const servieRacine = await recuperer(base, CANONIQUE_SERVIE, opt.timeout, "outil");
   const jRacine = juger(canon, servieRacine);
   if (jRacine.verdict === "INJOIGNABLE") injoignables++;
   else if (jRacine.verdict !== "CONFORME") fautes++;
+  const racinePrete = jRacine.verdict === "CONFORME" || jRacine.verdict === "DIVERGENT";
+  const livreeRacine = racinePrete ? await recuperer(base, CANONIQUE_SERVIE, opt.timeout, "navigateur") : null;
+  const jlRacine = racinePrete ? jugerLivraison(canon, livreeRacine) : null;
+  if (jlRacine?.verdict === "LIVRAISON ALTEREE") fautes++;
+  else if (jlRacine?.verdict === "LIVRAISON NON MESUREE") injoignables++;
   lignes.push({
     sujet: `${CANONIQUE_SERVIE} → ${canon.version}`,
     chemin: CANONIQUE_SERVIE,
     attendu: canon,
     servi: servieRacine,
     ...jRacine,
+    livre: livreeRacine,
+    livraison: jlRacine,
+    insertion: livreeRacine ? insertion(servieRacine.brut, livreeRacine.brut) : null,
   });
 
   const code = injoignables > 0 ? 2 : fautes > 0 ? 1 : 0;
@@ -262,11 +321,21 @@ const main = async () => {
     out(`[${marque}] ${l.verdict.padEnd(13)} ${l.sujet}`);
     out(`         ${l.servi.cible}`);
     if (l.verdict === "CONFORME") {
-      out(`         ${l.servi.size} o · ${court(l.servi.sha256)}`);
+      out(`         origine : ${l.servi.size} o · ${court(l.servi.sha256)}`);
     } else {
       out(`         ${l.motif}`);
       if (!l.servi.injoignable && l.servi.statut < 400)
         out(`         servi ${l.servi.size} o · attendu ${l.attendu.size} o`);
+    }
+    if (l.livraison) {
+      const m = l.livraison.verdict === "LIVRAISON INTACTE" ? "ok  " : l.livraison.verdict === "LIVRAISON NON MESUREE" ? "?   " : "FAUTE";
+      out(`  [${m}] ${l.livraison.verdict.padEnd(21)} profil navigateur`);
+      if (l.livraison.motif) out(`         ${l.livraison.motif}`);
+      if (l.insertion) {
+        out(`         +${l.insertion.octets} octets insérés à l'offset ${l.insertion.offset}`);
+        if (l.insertion.hotes.length) out(`         hôtes apparus à la livraison : ${l.insertion.hotes.join(", ")}`);
+        out(`         ${l.insertion.extrait.replace(/\s+/g, " ").slice(0, 150)}`);
+      }
     }
     out("");
   }
@@ -275,8 +344,8 @@ const main = async () => {
   out("");
   out(`Ce que ce résultat établit`);
   out(`  Les octets servis aux ${lignes.length} URL ci-dessus, à l'instant de la requête,`);
-  out(`  vus depuis cette machine, et pour les seules entrées nommées dans`);
-  out(`  ${opt.registry}.`);
+  out(`  vus depuis cette machine, sous DEUX profils de requête (outil et navigateur),`);
+  out(`  et pour les seules entrées nommées dans ${opt.registry}.`);
   out("");
   out(`Ce qu'il n'établit pas`);
   out(`  — que le serveur servira les mêmes octets dans une heure ;`);
@@ -285,7 +354,10 @@ const main = async () => {
   out(`    des valeurs gelées — pour celle-là, le garde d'immuabilité lit l'historique ;`);
   out(`  — qu'aucune AUTRE URL du site ne sert une copie fausse : ce garde ne découvre`);
   out(`    rien, il ne vérifie que les chemins déclarés dans le registre ;`);
-  out(`  — que les fichiers servis sont corrects, seulement qu'ils sont ceux déclarés.`);
+  out(`  — que les fichiers servis sont corrects, seulement qu'ils sont ceux déclarés ;`);
+  out(`  — qu'un troisième profil de requête recevrait les mêmes octets : un`);
+  out(`    intermédiaire peut réécrire selon des critères que ces deux-là n'exposent pas ;`);
+  out(`  — qu'un autre nœud du CDN, ou le même dans une heure, livrerait l'identique.`);
   out("");
   out(`Code de sortie : ${code}`);
   if (code === 2 && injoignables > 0)
