@@ -44,6 +44,13 @@ function servir(routes) {
       const r = routes[req.url.split("?")[0]];
       if (!r) return rep.writeHead(404, { "content-type": "text/html" }).end("nope");
       if (r.redirige) return rep.writeHead(302, { location: r.redirige }).end();
+      // Un intermédiaire réel (CDN, cache de l'hébergeur) réécrit le HTML pour
+      // les requêtes qui ressemblent à une navigation, et pas pour les autres.
+      if (routes.__injecte && String(req.headers.accept || "").includes("text/html")) {
+        return rep.writeHead(200, { "content-type": "text/html" }).end(
+          Buffer.concat([r, Buffer.from(routes.__injecte)])
+        );
+      }
       rep.writeHead(200, { "content-type": "text/html" }).end(r);
     });
     s.listen(0, "127.0.0.1", () => res({ s, port: s.address().port }));
@@ -175,6 +182,27 @@ const complet = {
   );
   s1.close();
   s2.close();
+}
+
+// ---------------------------------------------------------------- 9
+{
+  const BEACON =
+    '<script type="module" src="https://static.exemple-cdn.invalid/beacon.min.js" data-beacon=\'{"token":"abc"}\'></script>';
+  const { s, port } = await servir({ ...complet, __injecte: BEACON });
+  await cas(
+    "9. le serveur n'injecte un script QUE pour les requêtes HTML",
+    "LE FAUX VERT : une origine conforme pendant qu'un navigateur reçoit autre chose",
+    async () => {
+      const r = await lancer(`http://127.0.0.1:${port}`, ["--self-test"]);
+      if (r.code !== 1) return `code ${r.code}, attendu 1\n${r.out}`;
+      if (!r.out.includes("LIVRAISON ALTEREE")) return `sortie sans « LIVRAISON ALTEREE »\n${r.out}`;
+      if (!r.out.includes("CONFORME")) return `l'origine devait rester CONFORME\n${r.out}`;
+      if (!r.out.includes("static.exemple-cdn.invalid"))
+        return `l'hôte inséré n'est pas nommé\n${r.out}`;
+      return true;
+    }
+  );
+  s.close();
 }
 
 // ---------------------------------------------------------------- 8
